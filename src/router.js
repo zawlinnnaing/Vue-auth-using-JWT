@@ -6,6 +6,8 @@ import Login from "@/views/Login";
 import Profile from "@/views/Profile";
 import Register from "@/views/Register";
 import RetrieveToken from "@/views/RetrieveToken";
+import store from '@/store'
+import InactiveMessage from "@/views/InactiveMessage";
 
 Vue.use(Router);
 
@@ -22,6 +24,7 @@ const guestUser = {
         name: 'home'
     }
 };
+
 
 export default new Router({
     mode: 'history',
@@ -40,7 +43,13 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            meta: authUser,
+            meta: {
+                authUser,
+            },
+            beforeEnter: (to, from, next) => {
+                console.log(store.state.user);
+                next();
+            },
             component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         },
         {
@@ -66,6 +75,11 @@ export default new Router({
             name: 'retrieveToken',
             props: (route) => ({token: route.query.token}),
             component: RetrieveToken
+        },
+        {
+          path: '/inactive-msg',
+          name: 'inactiveMessage',
+          component: InactiveMessage
         },
         {
             path: '*',

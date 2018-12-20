@@ -42,18 +42,20 @@
     export default {
         name: 'app',
         components: {},
+        computed: {
+        },
         created() {
         },
-        methods : {
-            logout () {
+        methods: {
+            logout() {
                 this.$auth.logout({
-                    success(){
-
+                    success() {
                     }
                 });
             }
         }
     }
+
 
 </script>
 <style>
@@ -65,19 +67,24 @@
         color: #2c3e50;
         margin-top: 60px;
     }
-    ul.nav{
+
+    ul.nav {
         background-color: #424242;
     }
+
     ul.nav li a {
         color: #eeeeee !important;
     }
+
     ul.nav li a:hover {
         color: #FFF176 !important;
     }
-    div.view{
+
+    div.view {
         margin: 2rem;
     }
-    [v-cloak] > *{
+
+    [v-cloak] > * {
         display: none;
     }
 </style>

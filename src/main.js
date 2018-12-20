@@ -20,11 +20,10 @@ Vue.use(require('@websanova/vue-auth'), {
     router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js')
 });
 
-
 new Vue({
     router,
     store,
-    render: h => h(App)
+    render: h => h(App),
 }).$mount('#app');
 
 
