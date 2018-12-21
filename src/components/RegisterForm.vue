@@ -66,6 +66,8 @@
                 error: false
             }
         },
+        computed : {
+        },
         methods: {
 
             register() {
