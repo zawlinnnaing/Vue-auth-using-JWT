@@ -6,8 +6,9 @@ import Login from "@/views/Login";
 import Profile from "@/views/Profile";
 import Register from "@/views/Register";
 import RetrieveToken from "@/views/RetrieveToken";
-import store from '@/store'
 import InactiveMessage from "@/views/InactiveMessage";
+import {storeInjector} from "@/store";
+// import store from "@/store";
 
 Vue.use(Router);
 
@@ -25,6 +26,22 @@ const guestUser = {
     }
 };
 
+function checkActiveUser(to, from, next, store) {
+    store.dispatch('fetchUser');
+    store.watch(store.getters.getLoadedUser, function () {
+        if (store.getters.checkActiveUser === undefined) {
+            console.log('from undefined');
+            next(false);
+        } else {
+            if (store.getters.checkActiveUser) {
+                console.log('from true');
+                next();
+            } else {
+                next({name: 'inactiveMessage'});
+            }
+        }
+    });
+}
 
 export default new Router({
     mode: 'history',
@@ -35,6 +52,7 @@ export default new Router({
             props: true,
             name: 'home',
             meta: authUser,
+            // beforeEnter: storeInjector(checkActiveUser(to, from, next, store)),
             component: Home
         },
         {
@@ -45,10 +63,6 @@ export default new Router({
             // which is lazy-loaded when the route is visited.
             meta: {
                 authUser,
-            },
-            beforeEnter: (to, from, next) => {
-                console.log(store.state.user);
-                next();
             },
             component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         },
@@ -77,9 +91,9 @@ export default new Router({
             component: RetrieveToken
         },
         {
-          path: '/inactive-msg',
-          name: 'inactiveMessage',
-          component: InactiveMessage
+            path: '/inactive-msg',
+            name: 'inactiveMessage',
+            component: InactiveMessage
         },
         {
             path: '*',

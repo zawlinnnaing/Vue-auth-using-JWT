@@ -1,7 +1,7 @@
 <template>
     <div class="landing-page view">
         <h3>You are now logged in . </h3>
-        <div v-if="this.user && !this.user.is_verified" class="alert alert-danger">
+        <div v-show="this.user && !this.user.is_verified" class="alert alert-danger">
             Please check your email to verify . If you don't verify your account ,
             <strong>it will be deleted in a week !</strong>
         </div>
@@ -10,7 +10,6 @@
         </div>
     </div>
 </template>
-
 <script>
     export default {
         name: "LandingPage",
@@ -28,11 +27,6 @@
                     return this.$store.state.user
                 }
             },
-            // is_verify: {
-            //     get : function () {
-            //         return !!this.$store.state.user.email_verified_at
-            //     }
-            // }
         },
         created() {
             this.axios.get('/auth/home')
@@ -42,14 +36,7 @@
                 .catch((error) => {
                     console.log(error.data)
                 });
-            this.$store.dispatch('fetchUser', {vm: this});
-        },
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                console.log(vm.$store.getters.checkActiveUser);
-                return vm.$store.getters.checkActiveUser;
-            })
-            // next(false);
+            // this.$store.dispatch('fetchUser', {vm: this});
         }
     }
 </script>

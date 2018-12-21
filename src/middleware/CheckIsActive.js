@@ -1,3 +1,6 @@
-export default function checkIsActive({next, router}) {
-    console.log('hi from middleware');
+import store from "@/store";
+
+export default function checkActiveUser(to, from, next) {
+
+
 }

@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueRouter from 'vue-router'
 
 Vue.use(Vuex);
+Vue.use(VueRouter);
 
-export default new Vuex.Store({
+
+export const store = new Vuex.Store({
     state: {
         user: {},
     },
@@ -26,12 +29,24 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        fetchUser(context, {vm}) {
-            vm.$auth.fetch({
-                success(user) {
-                    context.commit('setUser', user.data);
-                }
-            });
-        }
+        // fetchUser(context, {vm}) {
+        //     console.log(vm.$route);
+        //     console.log(this._vm.$route);
+        //     // this._vm.$route = vm.$route;
+        //     vm.$auth.fetch({
+        //         success(user) {
+        //             // console.log('hi from successful fetch vuex');
+        //             context.commit('setUser', user.data);
+        //         },
+        //         error() {
+        //             console.log('error occurred');
+        //         }
+        //     });
+        // }
+
     }
-})
+});
+
+export function storeInjector(fn) {
+    return (...args) => fn(...args, store);
+}

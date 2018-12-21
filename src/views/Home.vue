@@ -31,8 +31,8 @@
             // });
         },
         computed: {
-            user : {
-                get : function () {
+            user: {
+                get: function () {
                     return this.$store.state.user;
                 }
             }
@@ -50,17 +50,24 @@
 
         methods: {},
         beforeRouteEnter(to, from, next) {
+            console.log('hello from home');
             next(vm => {
-                vm.$store.dispatch('fetchUser', {vm: vm});
+                // vm.$store.dispatch('fetchUser', {vm: vm});
+                vm.$auth.fetch({
+                    success: function (user) {
+                        vm.$store.commit('setUser',user.data);
+                    }
+                });
                 vm.$store.watch(vm.$store.getters.getLoadedUser, function () {
                     if (vm.$store.getters.checkActiveUser === undefined) {
                         console.log('from undefined');
                         next(false);
                     } else {
-                        if (vm.$store.getters.checkActiveUser){
+                        if (vm.$store.getters.checkActiveUser) {
                             console.log('from true');
-                             next();
+                            next();
                         } else {
+                            console.log('hi');
                             next({name: 'inactiveMessage'});
                         }
                     }

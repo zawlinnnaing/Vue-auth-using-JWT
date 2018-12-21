@@ -5,7 +5,7 @@ import VueAxios from 'vue-axios'
 import router from './router'
 import VueRouter from 'vue-router'
 import VeeValidate from 'vee-validate'
-import store from './store'
+import {store} from './store'
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
@@ -24,6 +24,9 @@ new Vue({
     router,
     store,
     render: h => h(App),
+    mounted() {
+        // console.debug("MOUNTED", this.$router)
+    }
 }).$mount('#app');
 
 

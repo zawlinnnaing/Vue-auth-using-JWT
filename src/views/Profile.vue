@@ -7,22 +7,23 @@
 <script>
     export default {
         name: "Profile",
-        data() {
-            return {
-                user: ''
+        computed : {
+            user : {
+                get: function () {
+                    return this.$store.state.user
+                }
             }
         },
         created() {
-            this.$auth.fetch({
-                    success(user) {
-                        this.user = user.data;
-                    },
-                }
-            );
+
         },
         beforeRouteEnter(to, from, next) {
             next(vm => {
-                vm.$store.dispatch('fetchUser', {vm: vm});
+                vm.$auth.fetch({
+                    success: function (user) {
+                        vm.$store.commit('setUser',user.data);
+                    }
+                });
                 vm.$store.watch(vm.$store.getters.getLoadedUser, function () {
                     if (vm.$store.getters.checkActiveUser === undefined) {
                         console.log('from undefined');
