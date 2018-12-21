@@ -56,9 +56,10 @@
                                     'email': self.email,
                                     'password': self.password
                                 },
+                                fetchUser: true,
                                 rememberMe: self.remember,
                             }).then(function (response) {
-                                self.$store.dispatch('fetchUser', {vm: self});
+                                console.log(response.data);
                             }).catch(function (error) {
                                 console.log(error);
                                 self.wrongCredentials = true;
@@ -75,7 +76,5 @@
         margin: 1rem 0;
     }
 
-    .invalid-msg {
-        margin: 1rem 0;
-    }
+
 </style>

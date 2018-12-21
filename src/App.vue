@@ -42,8 +42,7 @@
     export default {
         name: 'app',
         components: {},
-        computed: {
-        },
+        computed: {},
         created() {
         },
         methods: {
@@ -84,5 +83,9 @@
 
     [v-cloak] > * {
         display: none;
+    }
+
+    .invalid-msg {
+        margin: 1rem 0;
     }
 </style>
