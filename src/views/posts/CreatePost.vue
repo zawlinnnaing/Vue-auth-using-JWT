@@ -15,13 +15,13 @@
             </div>
             <div class="form-group">
                 <label for="postBody">Body</label>
-                <vue-trix id="postBody" type="hidden"
+                <vue-editor id="postBody"
                           name="body"
                           v-model="body"
                           v-validate="'required'"
                           :class="{'is-invalid': errors.has('body'),'trix-text-align' : true}"
                 >
-                </vue-trix>
+                </vue-editor>
                 <span v-show="errors.has('body')" class="form-text alert-danger invalid-msg" role="alert">
                 {{ errors.first('body')}}
                 </span>
@@ -30,16 +30,17 @@
                 <button class="btn btn-primary" type="submit" @click.prevent="post()">Submit</button>
             </div>
         </form>
+        {{ body}}
     </div>
 </template>
 
 <script>
-    import VueTrix from "vue-trix";
+    import {VueEditor} from 'vue2-editor'
 
     export default {
         name: "CreatePost",
         components: {
-            VueTrix
+            VueEditor
         },
         data() {
             return {
@@ -67,6 +68,7 @@
                             console.log(payload);
                             self.$store.dispatch('createPost', payload)
                                 .then(() => {
+                                    self.body = '';
                                     self.$router.push({name: 'posts'})
                                 });
                         }
@@ -99,7 +101,7 @@
 </script>
 
 <style scoped>
-.trix-text-align{
-    text-align: left;
-}
+    .trix-text-align {
+        text-align: left;
+    }
 </style>
