@@ -15,10 +15,10 @@
             </span>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+            <label>Password</label>
             <input type="password" class="form-control" name="password" placeholder="Password"
                    v-model="password"
-                   v-validate="'required|min:8'">
+                   v-validate="'required'">
             <span v-show="errors.has('password')" class="form-text alert-danger invalid-msg" role="alert">
                 {{ errors.first('password')}}
             </span>

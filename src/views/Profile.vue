@@ -1,48 +1,55 @@
 <template>
     <div class="view">
         <div class="row">
-            <form @submit.prevent v-cloak>
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" aria-describedby="userName"
-                           placeholder="Enter username"
-                           v-validate="'required|max:256'"
-                           v-model="user.name"
-                           :disabled="isDisabled"
-                           :class="{'form-control' : true , 'is-invalid' : errors.has('username')}"
-                           required>
-                    <span v-show="errors.has('username')" class="form-text alert-danger invalid-msg" role="alert">
+            <div class="col-md-8">
+                <form @submit.prevent v-cloak>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" id="username" aria-describedby="userName"
+                               placeholder="Enter username"
+                               v-validate="'required|max:256'"
+                               v-model="user.name"
+                               :disabled="isDisabled"
+                               :class="{'form-control' : true , 'is-invalid' : errors.has('username')}"
+                               required>
+                        <span v-show="errors.has('username')" class="form-text alert-danger invalid-msg" role="alert">
                 {{ errors.first('username')}}
             </span>
-                </div>
-                <!--<div :class="{'form-group' : true , 'has-error' : errors.has('email')}">-->
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" id="email" name="email" aria-describedby="emailHelp"
-                           placeholder="Enter email"
-                           v-validate="'required|email'"
-                           v-model="user.email"
-                           :disabled="isDisabled"
-                           :class="{'form-control' : true , 'is-invalid' : errors.has('email')}"
-                           required>
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.
-                    </small>
-                    <span v-show="errors.has('email')" class="form-text alert-danger invalid-msg" role="alert">
+                    </div>
+                    <!--<div :class="{'form-group' : true , 'has-error' : errors.has('email')}">-->
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="email" aria-describedby="emailHelp"
+                               placeholder="Enter email"
+                               v-validate="'required|email'"
+                               v-model="user.email"
+                               :disabled="isDisabled"
+                               :class="{'form-control' : true , 'is-invalid' : errors.has('email')}"
+                               required>
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.
+                        </small>
+                        <span v-show="errors.has('email')" class="form-text alert-danger invalid-msg" role="alert">
                 {{ errors.first('email') + 'has errors'+ errors.has('email')}}
             </span>
-                </div>
-                <button class="btn btn-primary" @click="edit()" v-show="isDisabled">edit</button>
-                <span style="padding: 0 1rem"></span>
-                <button class="btn btn-primary" v-show="!isDisabled" @click="undoEdit()">Undo Edit</button>
-                <span style="padding: 0 1rem"></span>
-                <button type="submit" class="btn btn-primary" @click="update()" v-show="!isDisabled">Update</button>
-            </form>
+                    </div>
+                    <router-link :to="{name:'changePassword'}" class="btn btn-primary">Change Password
+                    </router-link>
+                    <span style="padding: 0 1rem"></span>
+                    <button class="btn btn-primary" @click="edit()" v-show="isDisabled">edit</button>
+                    <span style="padding: 0 1rem"></span>
+                    <button class="btn btn-primary" v-show="!isDisabled" @click="undoEdit()">Undo Edit</button>
+                    <span style="padding: 0 1rem"></span>
+                    <button type="submit" class="btn btn-primary" @click="update()" v-show="!isDisabled">Update</button>
+                </form>
+            </div>
         </div>
 
         <div v-show="hasMsg"
              :class="{'alert': true, 'alert-danger': hasError, 'alert-success': !hasError , 'view': true}">
             {{ message }}
         </div>
+        <router-view></router-view>
     </div>
 </template>
 

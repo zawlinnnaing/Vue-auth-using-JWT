@@ -7,6 +7,9 @@ import Profile from "@/views/Profile";
 import Register from "@/views/Register";
 import RetrieveToken from "@/views/RetrieveToken";
 import InactiveMessage from "@/views/InactiveMessage";
+import ChangePassword from "@/components/ChangePassword";
+import Posts from "@/views/posts/Posts";
+import CreatePost from "@/views/posts/CreatePost";
 
 Vue.use(Router);
 
@@ -69,9 +72,7 @@ export default new Router({
             // route level code-splitting
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
-            meta: {
-                authUser,
-            },
+            meta: authUser,
             component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         },
         {
@@ -90,7 +91,26 @@ export default new Router({
             path: '/profile',
             name: 'profile',
             meta: authUser,
-            component: Profile
+            component: Profile,
+            children: [
+                {
+                    path: 'change_password',
+                    name: 'changePassword',
+                    component: ChangePassword
+                }
+            ]
+        },
+        {
+            path: '/posts',
+            name: 'posts',
+            component: Posts,
+            meta: authUser
+        },
+        {
+            path: '/posts/create_post',
+            name: 'createPost',
+            meta: authUser,
+            component: CreatePost
         },
         {
             path: '/retrieve-token/',

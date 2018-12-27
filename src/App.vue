@@ -20,7 +20,15 @@
                     <router-link :to="{name: 'about'}" class="nav-link">About</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link :to="{name: 'profile'}" class="nav-link">Profile</router-link>
+                    <router-link :to="{name: 'profile'}" class="nav-link">{{ isEmptyObj($store.state.user) ? 'Profile' :
+                        $store.state.user.name }}
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link :to="{name: 'posts'}" class="nav-link">Posts</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link :to="{name: 'createPost'}" class="nav-link">Create a post</router-link>
                 </li>
                 <li class="nav-item">
                     <a @click.prevent="logout()" class="nav-link">Logout</a>
@@ -47,10 +55,15 @@
         },
         methods: {
             logout() {
+                let self = this;
                 this.$auth.logout({
                     success() {
+                        self.$store.commit('clearUser');
                     }
                 });
+            },
+            isEmptyObj(obj) {
+                return Object.keys(obj).length === 0 && obj.constructor === Object
             }
         }
     }
