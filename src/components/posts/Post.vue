@@ -1,12 +1,14 @@
 <template>
-    <div class="post-card view">
+    <div class="post-card view" :id="'postId'+id">
         <div class="post-title">
             <h4><strong>{{ title }}</strong></h4>
             <hr>
         </div>
-        <p v-html="body"></p>
+        <div class="post-body" v-html="body"></div>
         <div class="post-footer">
-            <small><a href="#">Edit</a></small>
+            <small>
+                <router-link :to="{name: 'updatePost' , params: {id: id}}">Edit</router-link>
+            </small>
         </div>
     </div>
 </template>
@@ -14,6 +16,11 @@
 <script>
     export default {
         name: "Post",
+        data() {
+            return {
+                test: '<blockquote class="blockquote">Hi Test</blockquote>'
+            }
+        },
         props: ['id', 'title', 'body'],
     }
 </script>
@@ -36,8 +43,13 @@
     div.post-footer {
         text-align: right;
     }
-    div.post-title{
+
+    div.post-title {
         margin: 0.5rem 0;
-        font-family: "Kozuka Gothic Pro",serif;
+        font-family: "Kozuka Gothic Pro", serif;
+    }
+
+    div.post-body {
+        text-align: left;
     }
 </style>

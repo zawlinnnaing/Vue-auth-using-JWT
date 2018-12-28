@@ -15,6 +15,7 @@
 
     import LandingPage from "@/components/LandingPage";
     import LoginForm from "@/components/LoginForm";
+    import checkActiveUser from "@/middleware/CheckIsActive";
 
     export default {
         name: 'home',
@@ -31,10 +32,8 @@
             // });
         },
         computed: {
-            user: {
-                get: function () {
-                    return this.$store.state.user;
-                }
+            user() {
+                return this.$store.state.user
             }
         },
         // watch: {
@@ -50,29 +49,7 @@
 
         methods: {},
         beforeRouteEnter(to, from, next) {
-            console.log('hello from home');
-            next(vm => {
-                // vm.$store.dispatch('fetchUser', {vm: vm});
-                vm.$auth.fetch({
-                    success: function (user) {
-                        vm.$store.commit('setUser',user.data);
-                    }
-                });
-                vm.$store.watch(vm.$store.getters.getLoadedUser, function () {
-                    if (vm.$store.getters.checkActiveUser === undefined) {
-                        console.log('from undefined');
-                        next(false);
-                    } else {
-                        if (vm.$store.getters.checkActiveUser) {
-                            console.log('from true');
-                            next();
-                        } else {
-                            console.log('hi');
-                            next({name: 'inactiveMessage'});
-                        }
-                    }
-                });
-            });
+            checkActiveUser(to, from, next)
         }
     }
 </script>

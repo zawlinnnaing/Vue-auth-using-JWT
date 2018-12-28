@@ -12,6 +12,7 @@
 
 <script>
     import Post from "@/components/posts/Post";
+    import checkActiveUser from "@/middleware/CheckIsActive";
 
     export default {
         name: "Posts",
@@ -31,27 +32,7 @@
 
         },
         beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.$auth.fetch({
-                    success: function (user) {
-                        vm.$store.commit('setUser', user.data);
-                        vm.$store.dispatch('fetchPosts', user.data.id)
-                    }
-                });
-                vm.$store.watch(vm.$store.getters.getLoadedUser, function () {
-                    if (vm.$store.getters.checkActiveUser === undefined) {
-                        console.log('from undefined');
-                        next(false);
-                    } else {
-                        if (vm.$store.getters.checkActiveUser) {
-                            console.log('from true');
-                            next();
-                        } else {
-                            next({name: 'inactiveMessage'});
-                        }
-                    }
-                });
-            });
+            checkActiveUser(to, from, next)
         }
     }
 </script>

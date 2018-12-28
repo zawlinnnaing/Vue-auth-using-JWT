@@ -10,6 +10,7 @@ import InactiveMessage from "@/views/InactiveMessage";
 import ChangePassword from "@/components/ChangePassword";
 import Posts from "@/views/posts/Posts";
 import CreatePost from "@/views/posts/CreatePost";
+import UpdatePost from "@/views/posts/UpdatePost";
 
 Vue.use(Router);
 
@@ -111,6 +112,13 @@ export default new Router({
             name: 'createPost',
             meta: authUser,
             component: CreatePost
+        },
+        {
+            path: '/posts/update_post/:id',
+            props: true,
+            name: 'updatePost',
+            meta: authUser,
+            component: UpdatePost
         },
         {
             path: '/retrieve-token/',

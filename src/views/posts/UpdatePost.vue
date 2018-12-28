@@ -1,12 +1,12 @@
 <template>
     <div class="view">
         <form @submit.prevent>
-            <div class="form-group">
+            <div class="form-group" v-if="post !== undefined">
                 <label for="postTitle">Title</label>
                 <textarea id="postTitle" rows="2"
                           name="title"
                           v-validate="'required'"
-                          v-model="title"
+                          v-model="post.title"
                           :class="{'form-control' : true , 'is-invalid': errors.has('title')}"
                 ></textarea>
                 <span v-show="errors.has('title')" class="form-text alert-danger invalid-msg" role="alert">
@@ -16,10 +16,10 @@
             <div class="form-group">
                 <label for="postBody">Body</label>
                 <vue-editor id="postBody"
-                          name="body"
-                          v-model="body"
-                          v-validate="'required'"
-                          :class="{'is-invalid': errors.has('body'),'trix-text-align' : true}"
+                            name="body"
+                            v-model="post.body"
+                            v-validate="'required'"
+                            :class="{'is-invalid': errors.has('body'),'trix-text-align' : true}"
                 >
                 </vue-editor>
                 <span v-show="errors.has('body')" class="form-text alert-danger invalid-msg" role="alert">
@@ -27,7 +27,7 @@
                 </span>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit" @click.prevent="post()">Submit</button>
+                <button class="btn btn-primary" type="submit" @click.prevent="updatePost()">Update</button>
             </div>
         </form>
     </div>
@@ -36,43 +36,50 @@
 <script>
     import {VueEditor} from 'vue2-editor'
     import checkActiveUser from "@/middleware/CheckIsActive";
+    import {mapGetters} from 'vuex'
 
     export default {
-        name: "CreatePost",
+        name: "UpdatePost",
         components: {
             VueEditor
         },
         data() {
             return {
-                title: '',
-                body: ''
+                ready: false,
+                id: this.$route.params.id
             }
         },
         computed: {
             userId() {
                 return this.$store.state.user.id;
+            },
+            // ...mapGetters(['getUpdatePost'])
+            post() {
+                console.log('from computed');
+                return this.$store.getters.getUpdatePost(this.id);
             }
         },
         methods: {
-            post: function () {
+            updatePost() {
                 let self = this;
                 this.$validator.validateAll()
-                    .then((result) => {
-                        if (result) {
+                    .then((validated) => {
+                        if (validated) {
                             let payload = {
-                                id: self.userId,
-                                title: self.title,
-                                body: self.body
+                                userId: self.userId,
+                                postId: self.id,
+                                title: self.post.title,
+                                body: self.post.body
                             };
-                            console.log(result);
-                            console.log(payload);
-                            self.$store.dispatch('createPost', payload)
+                            self.$store.dispatch('updatePost', payload)
                                 .then(() => {
-                                    self.body = '';
-                                    self.$router.push({name: 'posts'})
-                                });
+                                    self.$router.push('/posts#postId' + self.id);
+                                })
                         }
                     })
+            },
+            isEmptyObj(obj) {
+                return Object.keys(obj).length === 0 && obj.constructor === Object
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -82,7 +89,5 @@
 </script>
 
 <style scoped>
-    .trix-text-align {
-        text-align: left;
-    }
+
 </style>
